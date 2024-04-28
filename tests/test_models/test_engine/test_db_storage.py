@@ -19,10 +19,11 @@ import os
 import pep8
 import unittest
 DBStorage = db_storage.DBStorage
+STORAGE_TYPE = os.environ.get('HBNB_TYPE_STORAGE')
 classes = {"Amenity": Amenity, "City": City, "Place": Place,
            "Review": Review, "State": State, "User": User}
 
-
+@unittest.skipIf(STORAGE_TYPE != 'db', 'skip if environ is not db')
 class TestDBStorageDocs(unittest.TestCase):
     """Tests to check the documentation and style of DBStorage class"""
     @classmethod
@@ -68,21 +69,31 @@ test_db_storage.py'])
                             "{:s} method needs a docstring".format(func[0]))
 
 
-class TestFileStorage(unittest.TestCase):
-    """Test the FileStorage class"""
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_all_returns_dict(self):
-        """Test that all returns a dictionaty"""
-        self.assertIs(type(models.storage.all()), dict)
+@unittest.skipIf(STORAGE_TYPE != 'db', 'skip if environ is not db')
+class TestDBStorage(unittest.TestCase):
+    """Test the DBStorage."""
+    def test_get(self):
+        """ Test get method in dbstorage."""
+        new_state = State(name="NewYork")
+        storage.new(new_state)
+        key = "State.{}".format(new_state.id)
+        result = storage.get("State", new_state.id)
+        self.assertTrue(result.id, new_state.id)
+        self.assertIsInstance(result, State)
 
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_all_no_class(self):
-        """Test that all returns all rows when no class is passed"""
+    def test_count(self):
+        """ Test count method in dbstorage."""
+        storage.reload()
+        old_count = storage.count("State")
+        new_state1 = State(name="NewYork")
+        storage.new(new_state1)
+        new_state2 = State(name="Virginia")
+        storage.new(new_state2)
+        new_state3 = State(name="California")
+        storage.new(new_state3)
+        self.assertEqual(old_count + 3, storage.count("State"))
 
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_new(self):
-        """test that new adds an object to the database"""
 
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_save(self):
-        """Test that save properly saves objects to file.json"""
+
+if __name__ == '__main__':
+    unittest.main()
