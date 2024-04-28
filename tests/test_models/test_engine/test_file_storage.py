@@ -19,10 +19,11 @@ import os
 import pep8
 import unittest
 FileStorage = file_storage.FileStorage
+STORAGE_TYPE = os.environ.get('HBNB_TYPE_STORAGE')
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
 
-
+@unittest.skipIf(STORAGE_TYPE == 'db', 'skip if environ is not file_storage')
 class TestFileStorageDocs(unittest.TestCase):
     """Tests to check the documentation and style of FileStorage class"""
     @classmethod
@@ -67,10 +68,9 @@ test_file_storage.py'])
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
-
+@unittest.skipIf(STORAGE_TYPE == 'db', 'skip if environ is not file_storage')
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_all_returns_dict(self):
         """Test that all returns the FileStorage.__objects attr"""
         storage = FileStorage()
@@ -78,7 +78,6 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(type(new_dict), dict)
         self.assertIs(new_dict, storage._FileStorage__objects)
 
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_new(self):
         """test that new adds an object to the FileStorage.__objects attr"""
         storage = FileStorage()
@@ -94,7 +93,6 @@ class TestFileStorage(unittest.TestCase):
                 self.assertEqual(test_dict, storage._FileStorage__objects)
         FileStorage._FileStorage__objects = save
 
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
         storage = FileStorage()
@@ -113,3 +111,27 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    def test_get(self):
+        """Test get method in file storage."""
+        new_state = State(name="NewYork")
+        storage.new(new_state)
+        key = "State.{}".format(new_state.id)
+        result = storage.get("State", new_state.id)
+        self.assertTrue(result.id, new_state.id)
+        self.assertIsInstance(result, State)
+
+    def test_count(self):
+        """Test count method in file storage."""
+        old_count = storage.count("State")
+        new_state1 = State(name="NewYork")
+        storage.new(new_state1)
+        new_state2 = State(name="Virginia")
+        storage.new(new_state2)
+        new_state3 = State(name="California")
+        storage.new(new_state3)
+        self.assertEqual(old_count + 3, storage.count("State"))
+
+
+if __name__ == "__main__":
+    unittest.main()
