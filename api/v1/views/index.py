@@ -16,13 +16,13 @@ classes = {"users": "User",
            "reviews": "Review"}
 
 
-@app_views.route('/status', strict_slashes=False)
+@app_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():
     """Returns the status in json format."""
     return jsonify({"status": "OK"})
 
 
-@app_views.route('/stats', strict_slashes=False)
+@app_views.route('/stats', methods=['GET'], strict_slashes=False)
 def stats():
     """Returns count of all objs in json format."""
     count_objs = {}
