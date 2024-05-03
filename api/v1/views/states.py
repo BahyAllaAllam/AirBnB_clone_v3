@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Api views for States"""
 
-from . import app_views
+from api.v1.views import app_views
 from flask import jsonify, Response, abort, request, make_response
 from werkzeug.exceptions import BadRequest
 import json
