@@ -23,6 +23,7 @@ STORAGE_TYPE = os.environ.get('HBNB_TYPE_STORAGE')
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
 
+
 @unittest.skipIf(STORAGE_TYPE == 'db', 'skip if environ is not file_storage')
 class TestFileStorageDocs(unittest.TestCase):
     """Tests to check the documentation and style of FileStorage class"""
@@ -67,6 +68,7 @@ test_file_storage.py'])
                              "{:s} method needs a docstring".format(func[0]))
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
+
 
 @unittest.skipIf(STORAGE_TYPE == 'db', 'skip if environ is not file_storage')
 class TestFileStorage(unittest.TestCase):
