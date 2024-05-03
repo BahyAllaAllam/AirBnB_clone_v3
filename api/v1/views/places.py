@@ -121,4 +121,4 @@ def places_search():
                     break
         return jsonify(confirmed_places)
     else:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+        abort(400, description="Not a JSON")
