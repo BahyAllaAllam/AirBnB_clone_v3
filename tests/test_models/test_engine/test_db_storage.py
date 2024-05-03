@@ -75,22 +75,22 @@ class TestDBStorage(unittest.TestCase):
     def test_get(self):
         """ Test get method in dbstorage."""
         new_state = State(name="NewYork")
-        storage.new(new_state)
+        models.storage.new(new_state)
         key = "State.{}".format(new_state.id)
-        result = storage.get("State", new_state.id)
+        result = models.storage.get("State", new_state.id)
         self.assertTrue(result.id, new_state.id)
         self.assertIsInstance(result, State)
 
     def test_count(self):
         """ Test count method in dbstorage."""
-        storage.reload()
-        old_count = storage.count("State")
+        models.storage.reload()
+        old_count = models.storage.count("State")
         new_state1 = State(name="NewYork")
-        storage.new(new_state1)
+        models.storage.new(new_state1)
         new_state2 = State(name="Virginia")
-        storage.new(new_state2)
+        models.storage.new(new_state2)
         new_state3 = State(name="California")
-        storage.new(new_state3)
+        models.storage.new(new_state3)
         self.assertEqual(old_count + 3, storage.count("State"))
 
 
