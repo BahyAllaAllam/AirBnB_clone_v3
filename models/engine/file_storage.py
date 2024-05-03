@@ -74,9 +74,8 @@ class FileStorage:
         or None if not found."""
         all_obj = self.all(cls)
         if all_obj:
-            for k, v in all_obj.items():
-                key = cls + '.' + id
-                if k == key:
+            for value in all_obj.values():
+                if value.id == id:
                     return v
         return None
 
