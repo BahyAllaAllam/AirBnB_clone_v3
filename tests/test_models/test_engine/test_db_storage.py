@@ -23,6 +23,7 @@ STORAGE_TYPE = os.environ.get('HBNB_TYPE_STORAGE')
 classes = {"Amenity": Amenity, "City": City, "Place": Place,
            "Review": Review, "State": State, "User": User}
 
+
 @unittest.skipIf(STORAGE_TYPE != 'db', 'skip if environ is not db')
 class TestDBStorageDocs(unittest.TestCase):
     """Tests to check the documentation and style of DBStorage class"""
@@ -92,7 +93,6 @@ class TestDBStorage(unittest.TestCase):
         new_state3 = State(name="California")
         models.storage.new(new_state3)
         self.assertEqual(old_count + 3, storage.count("State"))
-
 
 
 if __name__ == '__main__':
