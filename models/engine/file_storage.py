@@ -76,7 +76,7 @@ class FileStorage:
         if all_obj:
             for value in all_obj.values():
                 if value.id == id:
-                    return v
+                    return value
         return None
 
     def count(self, cls=None):
