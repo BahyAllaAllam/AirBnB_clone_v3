@@ -45,7 +45,7 @@ def create_state():
         return make_response("Not a JSON", 400)
     data = request.get_json()
     if 'name' not in data:
-        make_response('Missing name', 400)
+        return make_response('Missing name', 400)
     state_obj = State(**data)
     state_obj.save()
     return jsonify(state_obj.to_dict()), 201
