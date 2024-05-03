@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-"""
-Connect to API
-"""
-
+""" Connect to API and to return status of the API """
 import os
 from models import storage
 from api.v1.views import app_views
