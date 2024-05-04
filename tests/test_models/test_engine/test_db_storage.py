@@ -92,7 +92,7 @@ class TestDBStorage(unittest.TestCase):
         models.storage.new(new_state2)
         new_state3 = State(name="California")
         models.storage.new(new_state3)
-        self.assertEqual(old_count + 3, storage.count("State"))
+        self.assertEqual(old_count + 3, models.storage.count("State"))
 
 
 if __name__ == '__main__':
