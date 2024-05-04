@@ -29,7 +29,3 @@ def stats():
     for key, value in classes.items():
         count_objs[key] = storage.count(value)
     return jsonify(count)
-
-
-if __name__ == "__main__":
-    pass
